@@ -2,9 +2,7 @@ package jp.ac.uhyogo.apinfof
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
 import android.content.IntentFilter
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiManager
@@ -25,13 +23,11 @@ import kotlinx.coroutines.launch
 // import kotlinx.coroutines.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import jp.ac.uhyogo.apinfof.WifiReceiver
 
 class MainActivity : AppCompatActivity() {
 
-
     companion object{
-        // AP情報の取得間隔 [ms]
-        const val interval = 1000L
         lateinit var wifiManager: WifiManager
         @SuppressLint("StaticFieldLeak")
         lateinit var tvTimestamp: TextView
@@ -41,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         lateinit var lvAPInfo: ListView
     }
 
-    var wifiReceiver =  WifiReceiver()
+    private var wifiReceiver = WifiReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,8 +64,7 @@ class MainActivity : AppCompatActivity() {
         lvAPInfo    = findViewById(R.id.lv)
 
         // AP情報の取得開始
-        val scanWifiThread = ScanWifiThread()
-        scanWifiThread.start()
+        WifiScan.start()
     }
 
     override fun onResume() {
